@@ -166,11 +166,13 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
 
   /* przycisk "Kontakt" – wygląd desktopowy */
   .nav .links a.btn {
+    color: var(--muted) !important; /* ten sam szary co inne linki */
     border: 1px solid rgba(42,169,169,.35) !important;
     background: linear-gradient(180deg, rgba(42,169,169,.15), rgba(42,169,169,.05)) !important;
-    color: #e6f9ff !important;
   }
-    .nav .links a.btn:hover {
+
+  /* po najechaniu: efekt jak wcześniej */
+  .nav .links a.btn:hover {
     background: linear-gradient(180deg,var(--brand),var(--brand-2)) !important;
     color: #07222a !important;
     box-shadow: 0 0 8px rgba(45,212,191,0.35);
