@@ -1,1 +1,293 @@
-# http-pikadorsan.github.io-
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kancelaria Adwokacka • Adwokat Anna Franus – Zielona Góra</title>
+  <link rel="icon" type="image/png" href="logo.png" sizes="32x32">
+  <link rel="shortcut icon" type="image/png" href="logo.png">
+  <meta name="description" content="Kancelaria Adwokacka Adwokat Anna Franus w Zielonej Górze. Prawo rodzinne, cywilne, spadkowe, gospodarcze i administracyjne. Porady, reprezentacja, umowy." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Leaflet (OpenStreetMap) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+  <style>
+:root {
+  --bg: #191919;
+  --card: #202020;
+  --muted: #b3b3b3;
+  --text: #efefef;
+  --brand: #2aa9a9;
+  --brand-2: #31c4b5;
+  --radius: 18px;
+  --hero: url('IMG1.jpg');
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:linear-gradient(180deg,#1a1a1a 0%,#1c1c1c 50%,#181818 100%);
+  color:var(--text)
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block;border-radius:var(--radius)}
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:60;background:rgba(25,25,25,.9);backdrop-filter:blur(8px);border-bottom:1px solid rgba(180,180,180,.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid rgba(56,189,248,.35);
+  box-shadow: 0 0 12px rgba(34,211,238,0.25);
+  background: none;
+}
+
+.brand h1{font-size:18px;line-height:1.1;margin:0}
+.nav a.btn{padding:10px 14px;border-radius:12px;border:1px solid rgba(42,169,169,.35);background:linear-gradient(180deg,rgba(42,169,169,.15),rgba(42,169,169,.05));color:#e6f9ff}
+.nav .links a{margin-left:14px;color:var(--muted)}
+.nav .links a:hover{color:var(--brand-2)}
+
+/* HERO */
+.hero-image{position:relative;min-height:78vh;background-image:var(--hero);background-size:cover;background-position:center right;display:flex;align-items:center;justify-content:flex-start}
+.hero-image::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.88) 0%,rgba(0,0,0,.72) 40%,rgba(0,0,0,.35) 65%,rgba(0,0,0,0) 85%)}
+.hero-copy{position:relative;z-index:1;max-width:560px;margin:0;padding:56px 0 56px 6vw;text-shadow:0 3px 10px rgba(0,0,0,0.85)}
+.hero-copy h2{font-size:52px;line-height:1.1;margin:14px 0 12px;color:#fff}
+.hero-copy p{color:#f3f4f6;margin:0 0 14px;font-weight:400;max-width:48ch;text-align:justify;text-justify:inter-word;text-align-last:left;hyphens:auto;-webkit-hyphens:auto;-ms-hyphens:auto}
+.hero-copy .badge{display:inline-block;padding:6px 12px;border-radius:999px;border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.25);color:#d1f4ff;font-weight:500}
+.cta{display:flex;gap:12px;flex-wrap:nowrap;margin-top:12px;width:100%;justify-content:space-between;align-items:center}
+.btn-solid{padding:12px 16px;border-radius:14px;background:linear-gradient(180deg,var(--brand),var(--brand-2));border:0;color:#07222a;font-weight:700}
+.btn-ghost{padding:12px 16px;border-radius:14px;border:1px solid rgba(148,163,184,.3);background:rgba(148,163,184,.06)}
+
+/* Content */
+.card{background:linear-gradient(180deg,rgba(255,255,255,.015),rgba(255,255,255,.01));border:1px solid rgba(180,180,180,.1);border-radius:var(--radius);padding:20px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+section{padding:56px 0}
+h3{font-size:26px;margin:0 0 14px}
+.muted{color:var(--muted)}
+.list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.list li{display:flex;gap:10px;align-items:flex-start}
+.tick{width:22px;height:22px;border-radius:8px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.45);display:grid;place-items:center;flex:0 0 22px}
+
+/* Gallery */
+.gallery{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px}
+.gallery img{height:100%;object-fit:cover}
+
+/* Pricing */
+details{border:1px solid rgba(148,163,184,.18);border-radius:14px;padding:14px 16px;background:rgba(148,163,184,.06)}
+details+details{margin-top:10px}
+summary{cursor:pointer;font-weight:600}
+
+/* Contact / map */
+.contact{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}
+form label{display:block;font-size:14px;color:#cbd5e1;margin:10px 0 6px}
+form input,form textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(180,180,180,.2);background:#111;color:var(--text)}
+form input:focus,form textarea:focus{outline:none;border-color:var(--brand-2);background:#151515}
+form textarea{min-height:120px;resize:vertical}
+form .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.notice{font-size:12px;color:#9fb3c8;margin-top:6px}
+.map-card{height:320px;border-radius:16px;overflow:hidden;border:1px solid rgba(148,163,184,.18)}
+#map{height:100%;width:100%}
+
+/* Footer */
+footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0;color:#a5b4c3}
+.foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between}
+.social a{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(42,169,169,.4);color:#2dd4bf;background:rgba(42,169,169,.08);transition:all .25s ease;margin-left:6px}
+.social a:hover{background:linear-gradient(180deg,var(--brand),var(--brand-2));color:#07222a;transform:translateY(-2px);box-shadow:0 0 8px rgba(45,212,191,0.35)}
+.social i{font-size:18px}
+.post-footer-image{width:100%;max-height:420px;overflow:hidden}
+.post-footer-image img{width:100%;height:100%;object-fit:cover;border-radius:0}
+
+/* Responsive */
+@media (max-width:960px){
+  .grid-2{grid-template-columns:1fr}
+  .contact{grid-template-columns:1fr}
+  .gallery{grid-template-columns:1fr}
+  .hero-copy h2{font-size:38px}
+  .hero-image{min-height:66vh;background-position:center}
+  .hero-copy p{max-width:60ch;text-align:left;text-align-last:left}
+  .cta{flex-wrap:wrap;justify-content:flex-start;gap:10px}
+}
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top">
+        <img src="logo.png" alt="Logo kancelarii" class="logo" width="42" height="42">
+        <h1>Kancelaria Adwokacka<br><span style="color:var(--brand)">Adwokat Anna Franus</span></h1>
+      </a>
+      <div class="links">
+        <a href="#uslugi">Usługi</a>
+        <a href="#cennik">Cennik</a>
+        <a class="btn" href="#kontakt">Kontakt</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="top" class="hero-image">
+    <div class="container hero-copy">
+      <span class="badge">Zielona Góra • rzetelna pomoc prawna</span>
+      <h2>Dzień dobry!</h2>
+      <p>Wieloletnie doświadczenie pozwala nam udzielać kompleksowych porad i skutecznie prowadzić sprawy cywilne, rodzinne, spadkowe, gospodarcze oraz administracyjne. Udzielamy pomocy stacjonarnie i online – jasno, rzetelnie i z pełnym zaangażowaniem.</p>
+      <div class="cta">
+        <a class="btn-solid" href="#kontakt">Umów konsultację</a>
+        <a class="btn-ghost" href="#uslugi">Poznaj zakres usług</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- O KANCELARII & USŁUGI -->
+  <section id="uslugi">
+    <div class="container">
+      <div class="grid-2">
+        <div class="card">
+          <h3>O Kancelarii</h3>
+          <p>Kancelaria Adwokacka Adwokat Anna Franus to miejsce, w którym otrzymasz dopasowaną do Twojej sytuacji pomoc prawną. Działamy w oparciu o uczciwość, rzetelność i profesjonalizm. Reprezentujemy Klientów w całej Polsce – osoby indywidualne i przedsiębiorców – przed sądami, urzędami i instytucjami.</p>
+          <p>Potrzebujesz porady, wsparcia w negocjacjach albo reprezentacji w sądzie? Skontaktuj się – spokojnie przeprowadzimy Cię przez każdy etap sprawy.</p>
+        </div>
+        <div class="card">
+          <h3>Zakres usług</h3>
+          <ul class="list">
+            <li><span class="tick">✔</span><div><strong>Prawo rodzinne i opiekuńcze</strong> — rozwód, alimenty, kontakty z dzieckiem, władza rodzicielska.</div></li>
+            <li><span class="tick">✔</span><div><strong>Prawo cywilne</strong> i <strong>spadkowe</strong>.</div></li>
+            <li><span class="tick">✔</span><div><strong>Prawo gospodarcze</strong> i <strong>administracyjne</strong>.</div></li>
+            <li><span class="tick">✔</span><div>Opinie prawne, umowy, regulaminy, negocjacje.</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gallery" style="margin-top:18px">
+        <img src="IMG2.JPG" alt="Kancelaria – gabinet" title="Gabinet" />
+        <img src="IMG3.JPG" alt="Dokumenty i kodeks" title="Dokumenty" />
+        <img src="IMG4.JPG" alt="Sala rozpraw" title="Sala rozpraw" />
+      </div>
+    </div>
+  </section>
+
+  <!-- CENNIK -->
+  <section id="cennik">
+    <div class="container">
+      <h3>Cennik – zasady rozliczeń</h3>
+      <p class="muted">Wynagrodzenie zależy od rodzaju i stopnia skomplikowania sprawy oraz wymaganego nakładu pracy. Stosujemy rozliczenia ryczałtowe lub godzinowe. Do kwot doliczany jest VAT. Na każdym etapie informujemy o postępach i prognozie powodzenia działań.</p>
+      <div class="grid-2" style="margin-top:12px">
+        <div>
+          <details open>
+            <summary>Porady prawne</summary>
+            <p>Standardowo jedno spotkanie (ok. 60 minut). Jeśli po poradzie zlecisz dalsze prowadzenie sprawy – koszt porady zaliczymy na poczet wynagrodzenia.</p>
+          </details>
+          <details>
+            <summary>Pisma procesowe i pozaprocesowe</summary>
+            <p>Cena zależy od złożoności sprawy i terminu przygotowania (pozew, apelacja, wniosek, wezwanie). Informacje o stawkach udzielamy telefonicznie lub mailowo.</p>
+          </details>
+        </div>
+        <div>
+          <details>
+            <summary>Sprawy sądowe</summary>
+            <p>Wycena indywidualna – w zależności od charakteru i stopnia skomplikowania sprawy.</p>
+          </details>
+          <details>
+            <summary>Umowy i negocjacje</summary>
+            <p>Opiniowanie i sporządzanie umów – cena zależna od zakresu i terminu. Udział w negocjacjach – rozliczenie godzinowe lub ryczałtowe.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAKT + MAPA -->
+  <section id="kontakt">
+    <div class="container contact">
+      <div class="card">
+        <h3>Kontakt</h3>
+        <p><strong>Kancelaria Adwokacka Adwokat Anna Franus</strong><br>
+        ul. Ceglana 25 lok. 2, 65-211 Zielona Góra<br>
+        tel. <a href="tel:+48694990105">+48 694 990 105</a><br>
+        e-mail: <a href="mailto:adwokat.annafranus@gmail.com">adwokat.annafranus@gmail.com</a><br>
+        NIP 973-098-63-14 • REGON 528153723<br>
+        Godziny: pon.–pt. 9:00–17:00</p>
+
+        <!-- DZIAŁAJĄCY FORMULARZ FORMSPREE -->
+<form id="contactForm"
+      action="https://formspree.io/f/xpwooygd"
+      method="POST"
+      accept-charset="UTF-8">
+
+  <div class="row">
+    <div>
+      <label>Adres e-mail (do odpowiedzi)</label>
+      <input type="email" name="email" placeholder="jan.kowalski@example.com" required>
+    </div>
+    <div>
+      <label>Imię i nazwisko</label>
+      <input type="text" name="name" placeholder="Jan Kowalski" required>
+    </div>
+  </div>
+
+  <label>Telefon (opcjonalnie)</label>
+  <input type="text" name="phone" placeholder="600 000 000">
+
+  <label>Treść wiadomości</label>
+  <textarea name="message" placeholder="Krótko opisz sprawę…" required></textarea>
+
+  <!-- Ładniejszy układ w mailu + temat + strona podziękowania -->
+  <input type="hidden" name="_template" value="table">
+  <input type="hidden" name="_subject" value="Zapytanie z formularza – Kancelaria A. Franus">
+  <input type="hidden" name="_redirect" value="https://twojadomena.pl/dziekujemy.html">
+
+  <!-- honeypot (anty-spam) -->
+  <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+  <div style="display:flex;gap:10px;align-items:center;margin-top:10px">
+    <button class="btn-solid" type="submit">Wyślij</button>
+    <span class="notice">Wysyłając formularz akceptujesz kontakt zwrotny w celach obsługi zapytania.</span>
+  </div>
+</form>
+
+      </div>
+
+      <div class="map-card card">
+        <div id="map" data-lat="51.935" data-lng="15.506" aria-label="Mapa dojazdu – OpenStreetMap"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container foot">
+      <div>© <span id="year"></span> Kancelaria Adwokacka Adwokat Anna Franus • Wszystkie prawa zastrzeżone</div>
+      <div class="social">
+        <a href="https://www.facebook.com/share/1CvWSiwB24/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/adwokat_anna_franus?igsh=NHdkOWF2bm4xbjR4&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Rok w stopce
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mapa – Leaflet + OpenStreetMap
+    (function(){
+      const el = document.getElementById('map');
+      const lat = parseFloat(el.dataset.lat);
+      const lng = parseFloat(el.dataset.lng);
+      const map = L.map(el).setView([lat, lng], 15);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+      const marker = L.marker([lat, lng]).addTo(map);
+      marker.bindPopup('<b>Kancelaria Adwokacka</b><br>Adwokat Anna Franus').openPopup();
+    })();
+  </script>
+</body>
+</html>
