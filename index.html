@@ -228,33 +228,37 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
   <div class="row">
     <div>
       <label>Adres e-mail (do odpowiedzi)</label>
-      <input type="email" name="email" placeholder="jan.kowalski@example.com" required>
+      <input type="email" name="email" placeholder="jan.kowalski@example.com" required />
     </div>
     <div>
       <label>Imię i nazwisko</label>
-      <input type="text" name="name" placeholder="Jan Kowalski" required>
+      <input type="text" name="name" placeholder="Jan Kowalski" required />
     </div>
   </div>
 
+  <label>Tytuł sprawy</label>
+  <input type="text" name="topic" placeholder="Np. rozwód, podział majątku, spadek..." required />
+
   <label>Telefon (opcjonalnie)</label>
-  <input type="text" name="phone" placeholder="600 000 000">
+  <input type="text" name="phone" placeholder="600 000 000" />
 
   <label>Treść wiadomości</label>
   <textarea name="message" placeholder="Krótko opisz sprawę…" required></textarea>
 
-  <!-- Ładniejszy układ w mailu + temat + strona podziękowania -->
-  <input type="hidden" name="_template" value="table">
-  <input type="hidden" name="_subject" value="Nowe zapytanie od {{name}} – Kancelaria A. Franus" />
-  <input type="hidden" name="_redirect" value="https://twojadomena.pl/dziekujemy.html">
+  <!-- 📩 dynamiczny temat wiadomości -->
+  <input type="hidden" name="_subject" value="{{name}} – {{topic}} (Kancelaria A. Franus)" />
 
-  <!-- honeypot (anty-spam) -->
-  <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+  <!-- inne ustawienia -->
+  <input type="hidden" name="_template" value="table" />
+  <input type="hidden" name="_redirect" value="/dziekujemy.html" />
+  <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
 
   <div style="display:flex;gap:10px;align-items:center;margin-top:10px">
     <button class="btn-solid" type="submit">Wyślij</button>
     <span class="notice">Wysyłając formularz akceptujesz kontakt zwrotny w celach obsługi zapytania.</span>
   </div>
 </form>
+
 
       </div>
 
