@@ -88,6 +88,9 @@ img{max-width:100%;display:block;border-radius:var(--radius)}
 .cta{display:flex;gap:12px;flex-wrap:nowrap;margin-top:12px;width:100%;justify-content:space-between;align-items:center}
 .btn-solid{padding:12px 16px;border-radius:14px;background:linear-gradient(180deg,var(--brand),var(--brand-2));border:0;color:#07222a;font-weight:700}
 .btn-ghost{padding:12px 16px;border-radius:14px;border:1px solid rgba(148,163,184,.3);background:rgba(148,163,184,.06)}
+.btn-ghost{border:1px solid rgba(42,169,169,0.6)!important;background:rgba(42,169,169,0.08)!important;color:#d9fafa!important;transition:all .25s ease}
+.btn-ghost:hover{background:linear-gradient(180deg,var(--brand),var(--brand-2))!important;color:#07222a!important;box-shadow:0 0 10px rgba(45,212,191,0.35)}
+
 
 /* Content */
 .card{background:linear-gradient(180deg,rgba(255,255,255,.015),rgba(255,255,255,.01));border:1px solid rgba(180,180,180,.1);border-radius:var(--radius);padding:20px}
@@ -255,6 +258,30 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
   .brand h1{ font-size:16px }
   .brand .logo{ width:38px; height:38px }
 }
+/* --- MOBILE: e-mail nad imieniem, przycisk bez zmian --- */
+@media (max-width: 560px){
+  /* 1 kolumna w pierwszym wierszu formularza */
+  form .row{
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  form .row > div{
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Zostaw układ przycisku i notki w jednym rzędzie (jak było) */
+  form div[style*="display:flex"][style*="margin-top:10px"]{
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+  /* Tylko zapobiegnij łamaniu „Wyślij” do dwóch linii */
+  .btn-solid{ white-space: nowrap; }
+}
+
+
 
 /* delikatna animacja */
 @keyframes fadeIn{ from{opacity:0; transform:translateY(-4px)} to{opacity:1; transform:translateY(0)} }
@@ -270,7 +297,7 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
   <div class="container nav-inner">
     <a class="brand" href="#top">
       <img src="logo.png" alt="Logo kancelarii" class="logo" width="42" height="42">
-      <h1>Kancelaria Adwokacka<br><span style="color:var(--brand)">Adwokat Anna Franus</span></h1>
+      <h1> Kancelaria Adwokacka<br><span style="color:var(--brand)">Adwokat Anna Franus</span></h1>
     </a>
 
     <!-- hamburger -->
@@ -314,18 +341,18 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
         <div class="card">
           <h3>Zakres usług</h3>
           <ul class="list">
-            <li><span class="tick">✔</span><div><strong>Prawo rodzinne i opiekuńcze</strong> — rozwód, alimenty, kontakty z dzieckiem, władza rodzicielska.</div></li>
-            <li><span class="tick">✔</span><div><strong>Prawo cywilne</strong> i <strong>spadkowe</strong>.</div></li>
-            <li><span class="tick">✔</span><div><strong>Prawo gospodarcze</strong> i <strong>administracyjne</strong>.</div></li>
-            <li><span class="tick">✔</span><div>Opinie prawne, umowy, regulaminy, negocjacje.</div></li>
+            <li><span class="tick">✔</span><div><strong>Prawo rodzinne i opiekuńcze</strong> — rozwody, alimenty, kontakty z dzieckiem, władza rodzicielska.</div></li>
+            <li><span class="tick">✔</span><div><strong>Prawo cywilne i spadkowe</strong> — roszczenia, umowy, spadki, zachowki.</div></li>
+            <li><span class="tick">✔</span><div><strong>Prawo gospodarcze i administracyjne</strong> — obsługa firm, postępowania urzędowe, odwołania.</div></li>
+            <li><span class="tick">✔</span><div><strong>Opinie i umowy</strong> — analizy prawne, regulaminy, negocjacje.</div></li>
           </ul>
         </div>
       </div>
 
       <div class="gallery" style="margin-top:18px">
-      <img src="IMG2.JPG" alt="Adwokat przed sądem" title="Adwokat przed sądem" />
-      <img src="IMG3.JPG" alt="Toga adwokacka" title="Toga adwokacka" />
-      <img src="IMG4.JPG" alt="Adwokat w kancelarii" title="Adwokat w kancelarii" />
+        <img src="IMG2.JPG" alt="Adwokat przed sądem" title="Adwokat przed sądem" />
+        <img src="IMG3.JPG" alt="Toga adwokacka" title="Toga adwokacka" />
+        <img src="IMG4.JPG" alt="Adwokat w kancelarii" title="Adwokat w kancelarii" />
 
       </div>
     </div>
