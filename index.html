@@ -9,7 +9,8 @@
   <meta name="description" content="Kancelaria Adwokacka Adwokat Anna Franus w Zielonej Górze. Prawo rodzinne, cywilne, spadkowe, gospodarcze i administracyjne. Porady, reprezentacja, umowy." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
   <!-- Leaflet (OpenStreetMap) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -287,6 +288,30 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
 @keyframes fadeIn{ from{opacity:0; transform:translateY(-4px)} to{opacity:1; transform:translateY(0)} }
 
 
+/* ----- iPhone/Safari only fixes ----- */
+@supports (-webkit-touch-callout: none) {
+  /* 1) Galeria: nie wymuszaj height:100% – użyj naturalnych proporcji */
+  .gallery img{
+    height: auto !important;
+    width: 100%;
+    object-fit: cover;
+    /* opcjonalnie, aby ujednolicić wysokości na iOS:
+       aspect-ratio: 4 / 3;  */
+  }
+
+  /* 2) Obrazek w stopce (jeśli masz) – też bez height:100% */
+  .post-footer-image img{
+    height: auto !important;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  /* 3) Hero na iOS: uniknij skakania 100vh przez pasek adresu */
+  .hero-image{
+    min-height: 78svh; /* iOS-friendly viewport unit */
+    background-position: center right;
+  }
+}
 
   </style>
 </head>
@@ -402,7 +427,7 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
 
         <!-- DZIAŁAJĄCY FORMULARZ FORMSPREE -->
 <form id="contactForm"
-      action="https://formspree.io/f/f/meopybvr"
+      action="https://formspree.io/f/xpwooygd"
       method="POST"
       accept-charset="UTF-8">
 
