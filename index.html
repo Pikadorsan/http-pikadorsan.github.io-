@@ -11,6 +11,8 @@
   <link rel="canonical" href="https://adwokatannafranus.pl/" />
   <link rel="icon" type="image/png" href="logo.png" sizes="32x32">
   <link rel="shortcut icon" type="image/png" href="logo.png">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap" as="style" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap"></noscript>
+
   <meta name="description" content="Kancelaria Adwokacka Adwokat Anna Franus w Zielonej Górze. Prawo rodzinne, cywilne, spadkowe, gospodarcze i administracyjne. Porady, reprezentacja, umowy." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -95,6 +97,17 @@ img{max-width:100%;display:block;border-radius:var(--radius)}
 }
 
 .brand h1{font-size:18px;line-height:1.1;margin:0}
+.brand h1{
+  font-family: 'Crimson Text', Georgia, 'Times New Roman', Times, serif !important;
+  font-weight: 700;
+  letter-spacing: .2px;
+  line-height: 1.05;
+}
+
+/* Opcjonalnie subtelniejsze wyrównanie na mobile, jeśli chcesz ciut mniejszy rozmiar */
+@media (max-width: 560px){
+  .brand h1{ font-size: 17px; }
+}
 .nav a.btn{padding:10px 14px;border-radius:12px;border:1px solid rgba(42,169,169,.35);background:linear-gradient(180deg,rgba(42,169,169,.15),rgba(42,169,169,.05));color:#e6f9ff}
 /* Ujednolicenie pozycji menu w dropdownie MOBILNYM */
 .nav .links a {
@@ -433,22 +446,35 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
         <div>
           <details open>
             <summary>Porady prawne</summary>
-            <p>Standardowo jedno spotkanie (ok. 60 minut). Jeśli po poradzie zlecisz dalsze prowadzenie sprawy – koszt porady zaliczymy na poczet wynagrodzenia.</p>
+            <p>Porada obejmuje jedno, około 60-minutowe spotkanie. W sytuacji, gdy Klient zdecyduje się powierzyć Kancelarii dalsze prowadzenie jego sprawy, np. na drodze sądowej, koszt porady zostaje zaliczony na poczet wynagrodzenia za dalszą obsługę prawną.</p>
           </details>
           <details>
             <summary>Pisma procesowe i pozaprocesowe</summary>
-            <p>Cena zależy od złożoności sprawy i terminu przygotowania (pozew, apelacja, wniosek, wezwanie). Informacje o stawkach udzielamy telefonicznie lub mailowo.</p>
+            <p>Koszt sporządzenia pisma procesowego, np. pozwu, apelacji, wniosku czy wezwania zależy od stopnia skomplikowania zagadnienia (stanu faktycznego) oraz terminu, w którym pismo musi zostać przygotowane. Informację o stawce wynagrodzenia można uzyskać drogą telefoniczną lub po przesłaniu zapytania e-mailem.</p>
+          </details>
+          <details>
+            <summary>Negocjacje</summary>
+            <p>Koszt udziału Kancelarii w negocjacjach uzależniony jest od typu sprawy oraz czasochłonności. Może być rozliczany według stawki godzinowej lub ryczałtowo, za całość obsługi.</p>
           </details>
         </div>
         <div>
           <details>
             <summary>Sprawy sądowe</summary>
-            <p>Wycena indywidualna – w zależności od charakteru i stopnia skomplikowania sprawy.</p>
+            <p>Koszt prowadzenia sprawy sądowej (np. rozwodowej, alimentacyjnej czy cywilnej) jest za każdym razem ustalany indywidualnie i zależy od charakteru sprawy, złożoności oraz wymaganego nakładu pracy do jej realizacji. Wynagrodzenie składać się może z opłat za następujące elementy, które Klient może zlecić Kancelarii łącznie lub też Kancelaria może świadczyć pomoc w dowolnym zleconym momencie w toku sprawy: 
+            <ul>
+              <li>reprezentowanie przed sądem rejonowym, okręgowym (pierwszej instancji), </li>
+              <li>reprezentowanie przed sądem okręgowym, apelacyjnym (drugiej instancji), </li>
+              <li>sporządzenie skargi kasacyjnej, </li>
+              <li>pozostałe zlecone czynności. </li>
+            </ul>  
+
+            </p>
           </details>
           <details>
-            <summary>Umowy i negocjacje</summary>
-            <p>Opiniowanie i sporządzanie umów – cena zależna od zakresu i terminu. Udział w negocjacjach – rozliczenie godzinowe lub ryczałtowe.</p>
+            <summary>Opiniowanie i sporządzanie umów</summary>
+            <p>Koszt sporządzenia lub opiniowania umowy zależy od stopnia jej skomplikowania, stopnia szczegółowości dokumentu oraz terminu wykonania prac.</p>
           </details>
+
         </div>
       </div>
     </div>
