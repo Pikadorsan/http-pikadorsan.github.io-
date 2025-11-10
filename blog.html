@@ -114,12 +114,15 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
   </footer>
 
 <script>
-  // Rok w stopce
-  document.getElementById('year').textContent = new Date().getFullYear();
+  /* ===== Rok w stopce ===== */
+  (function(){ 
+    var y = document.getElementById('year'); 
+    if (y) y.textContent = new Date().getFullYear(); 
+  })();
 
-  // NAV: hamburger / dropdown (identyczny jak w index.html)
+  /* ===== NAV: hamburger / dropdown (jak w index.html) ===== */
   (function () {
-    const btn = document.querySelector('.nav-toggle');
+    const btn  = document.querySelector('.nav-toggle');
     const menu = document.getElementById('nav-menu');
     if (!btn || !menu) return;
 
@@ -129,13 +132,13 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
       btn.innerHTML = open ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
     });
 
-    menu.querySelectorAll('a').forEach(a =>
+    menu.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
         menu.classList.remove('open');
         btn.setAttribute('aria-expanded', 'false');
         btn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-      })
-    );
+      });
+    });
 
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768) {
@@ -146,20 +149,21 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
     });
   })();
 
-  // ===== BLOG =====
-  const PATH = 'blog';            // folder na wpisy .txt
+  /* ===== BLOG ===== */
+  const PATH = 'blog';      // katalog z plikami BLOG1.txt, BLOG2.txt, ...
   let ALL_POSTS = [];
 
-  // Bezpieczna budowa URL-a względem aktualnej strony (działa w podkatalogach GH Pages)
+  // Bezpieczne budowanie URL względem bieżącej strony (działa w podkatalogach)
   function blogUrl(file) {
-    return new URL(`${PATH}/${file}`, window.location.href).toString();
+    return new URL(file, window.location.href).toString();
   }
 
+  // Parsowanie metadanych + treści z TXT
   function parseMetaAndBody(raw) {
-    const parts = raw.split(/\r?\n-{3,}\r?\n/);
-    const head = parts[0] || '';
-    const body = parts.slice(1).join('\n---\n') || '';
-    const meta = {};
+    const parts = raw.split(/\r?\n-{3,}\r?\n/);           // separator: linia z --- (min 3)
+    const head  = parts[0] || '';
+    const body  = parts.slice(1).join('\n---\n') || '';
+    const meta  = {};
     head.split(/\r?\n/).forEach(line => {
       const m = line.match(/^\s*([A-Za-z]+)\s*:\s*(.+)\s*$/);
       if (m) meta[m[1].toUpperCase()] = m[2];
@@ -167,32 +171,35 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
     return { meta, body };
   }
 
-  function stripMd(md) {
+  // Proste „odmarkdownowanie” do zajawki
+  function stripMd(md){
     return md
-      .replace(/```[\s\S]*?```/g, '')
-      .replace(/`[^`]*`/g, '')
-      .replace(/!\[[^\]]*\]\([^)]+\)/g, '')
-      .replace(/\[[^\]]*\]\([^)]+\)/g, '')
-      .replace(/[#>*_\-`~]+/g, '')
-      .replace(/\r?\n\r?\n/g, ' ⏎ ')
-      .replace(/\r?\n/g, ' ');
+      .replace(/```[\s\S]*?```/g,'')         // bloki kodu
+      .replace(/`[^`]*`/g,'')                // inline code
+      .replace(/!\[[^\]]*\]\([^)]+\)/g,'')   // obrazki
+      .replace(/\[[^\]]*\]\([^)]+\)/g,'')    // linki
+      .replace(/[#>*_\-`~]+/g,'')            // dekoracje
+      .replace(/\r?\n\r?\n/g,' ⏎ ')          // akapity
+      .replace(/\r?\n/g,' ');
   }
   function excerpt(md, n = 220) {
     const t = stripMd(md).trim();
     return t.length > n ? t.slice(0, n).replace(/\s+\S*$/, '') + '…' : t;
   }
 
+  // Pobierz pojedynczy wpis (zwraca null przy 404/błędzie)
   async function fetchOne(n) {
     try {
-      const res = await fetch(blogUrl(`BLOG${n}.txt`), { cache: 'no-store' });
-      if (!res.ok) return null;              // np. 404
+      const url = blogUrl(`${PATH}/BLOG${n}.txt`);
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) return null;                    // np. 404
       const raw = await res.text();
       const { meta, body } = parseMetaAndBody(raw);
       return {
         id: n,
         title: meta.TITLE || `Wpis #${n}`,
-        date: meta.DATE || '',
-        tags: (meta.TAGS || '').split(',').map(s => s.trim()).filter(Boolean),
+        date:  meta.DATE  || '',
+        tags:  (meta.TAGS || '').split(',').map(s => s.trim()).filter(Boolean),
         image: meta.IMAGE || '',
         body
       };
@@ -201,10 +208,10 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
     }
   }
 
+  // Skaner: idzie po kolejnych plikach i kończy po 3 kolejnych 404 (max 100 prób)
   async function loadAll() {
     const found = [];
-    let i = 1;
-    let misses = 0;
+    let i = 1, misses = 0;
     const MISS_LIMIT = 3;
     const HARD_LIMIT = 100;
 
@@ -215,54 +222,87 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
       i++;
     }
 
-    found.sort((a, b) => b.id - a.id);
+    found.sort((a,b) => b.id - a.id);
     ALL_POSTS = found;
     render(found);
   }
 
+  // Karta wpisu (naprawione dodawanie obrazka)
   function makeCard(p) {
-    const w = document.createElement('article'); w.className = 'post-card';
+    const w = document.createElement('article');
+    w.className = 'post-card';
 
+    // Tytuł
     const h = document.createElement('h3');
     const a = document.createElement('a');
     a.href = `post.html?id=BLOG${p.id}`;
     a.textContent = p.title || 'Bez tytułu';
     h.appendChild(a);
 
-    const meta = document.createElement('div'); meta.className = 'meta';
+    // Meta: data + tagi
+    const meta = document.createElement('div');
+    meta.className = 'meta';
     const date = document.createElement('span');
     date.textContent = p.date ? new Date(p.date).toLocaleDateString('pl-PL') : '';
-    const tags = document.createElement('div'); tags.className = 'tags';
+    const tags = document.createElement('div');
+    tags.className = 'tags';
     (p.tags || []).forEach(t => {
-      const s = document.createElement('span'); s.className = 'tag'; s.textContent = '#' + t; tags.appendChild(s);
+      const s = document.createElement('span');
+      s.className = 'tag';
+      s.textContent = '#' + t;
+      tags.appendChild(s);
     });
-
-    meta.appendChild(date); if ((p.tags || []).length) meta.appendChild(tags);
+    meta.appendChild(date);
+    if ((p.tags || []).length) meta.appendChild(tags);
 
     w.appendChild(h);
     w.appendChild(meta);
 
-    if (p.image) {
-      const c = document.createElement('div'); c.className = 'cover';
-      const img = document.createElement('img'); img.loading = 'lazy'; img.src = p.image; img.alt = p.title || 'Okładka wpisu';
-      c.appendChild(img); w.appendChild(c);
+    // ✅ Obraz dodaj tylko, jeśli jest ustawiony i się ładuje
+    if (p.image && p.image.trim() !== '') {
+      const c = document.createElement('div');
+      c.className = 'cover';
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.src = p.image.trim();
+      img.alt = p.title || 'Okładka wpisu';
+      img.onerror = () => c.remove();             // zniknij, gdy nie ma obrazka
+      c.appendChild(img);
+      w.appendChild(c);
     }
 
-    const ex = document.createElement('p'); ex.className = 'excerpt'; ex.textContent = excerpt(p.body);
-    const rm = document.createElement('a'); rm.className = 'readmore'; rm.href = `post.html?id=BLOG${p.id}`; rm.textContent = 'Czytaj dalej →';
-    w.appendChild(ex); w.appendChild(rm);
+    // Zajawka + "Czytaj dalej"
+    const ex = document.createElement('p');
+    ex.className = 'excerpt';
+    ex.textContent = excerpt(p.body);
+
+    const rm = document.createElement('a');
+    rm.className = 'readmore';
+    rm.href = `post.html?id=BLOG${p.id}`;
+    rm.textContent = 'Czytaj dalej →';
+
+    w.appendChild(ex);
+    w.appendChild(rm);
+
     return w;
   }
 
+  // Render listy
   function render(list) {
-    const root = document.getElementById('posts');
+    const root  = document.getElementById('posts');
     const empty = document.getElementById('empty');
+    if (!root) return;
+
     root.innerHTML = '';
-    if (!list.length) { empty.style.display = 'block'; return; }
-    empty.style.display = 'none';
+    if (!list.length) { 
+      if (empty) empty.style.display = 'block';
+      return; 
+    }
+    if (empty) empty.style.display = 'none';
     list.forEach(p => root.appendChild(makeCard(p)));
   }
 
+  // Szukaj po tytule i tagach
   function setupSearch() {
     const q = document.getElementById('q');
     if (!q) return;
@@ -271,15 +311,17 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
       if (!term) return render(ALL_POSTS);
       const f = ALL_POSTS.filter(p =>
         (p.title || '').toLowerCase().includes(term) ||
-        (p.tags || []).some(t => t.toLowerCase().includes(term))
+        (p.tags  || []).some(t => t.toLowerCase().includes(term))
       );
       render(f);
     });
   }
 
+  // Start
   setupSearch();
   loadAll();
 </script>
+
 
 </body>
 </html>
