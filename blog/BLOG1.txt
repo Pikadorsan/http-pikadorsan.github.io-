@@ -14,6 +14,6 @@ w sprawie rozwodowej.
 Więcej informacji znajdziesz na stronie [gov.pl](https://www.gov.pl/).
 
 Obrazek w treści:
-![Przykładowa okładka](IMG_BLOG1_inside.jpg)
+![Przykładowa okładka](logo.png)
 
 Akapity oddzielaj *pustą linią*. To wszystko.
