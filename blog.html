@@ -117,7 +117,7 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
   // Rok w stopce
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // NAV: hamburger / dropdown
+  // NAV: hamburger / dropdown (identyczny jak w index.html)
   (function () {
     const btn = document.querySelector('.nav-toggle');
     const menu = document.getElementById('nav-menu');
@@ -129,7 +129,6 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
       btn.innerHTML = open ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
     });
 
-    // zamykanie po kliknięciu w link
     menu.querySelectorAll('a').forEach(a =>
       a.addEventListener('click', () => {
         menu.classList.remove('open');
@@ -138,7 +137,6 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
       })
     );
 
-    // reset przy zmianie szerokości
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768) {
         menu.classList.remove('open');
@@ -147,67 +145,140 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
       }
     });
   })();
-</script>
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script>
-const PATH = 'blog';
-let ALL_POSTS = [];
+  // ===== BLOG =====
+  const PATH = 'blog';            // folder na wpisy .txt
+  let ALL_POSTS = [];
 
-// Parsowanie nagłówka + treści z TXT (bez zmian)
-function parseMetaAndBody(raw){
-  const parts = raw.split(/\r?\n-{3,}\r?\n/);
-  const head = parts[0] || '';
-  const body = parts.slice(1).join('\n---\n') || '';
-  const meta = {};
-  head.split(/\r?\n/).forEach(l=>{
-    const m = l.match(/^\s*([A-Za-z]+)\s*:\s*(.+)\s*$/);
-    if (m) meta[m[1].toUpperCase()] = m[2];
-  });
-  return { meta, body };
-}
-
-// Pobranie jednego wpisu – zwraca null gdy 404/błąd
-async function fetchOne(n){
-  try{
-    const res = await fetch(`${PATH}/BLOG${n}.txt`, { cache: 'no-store' });
-    if (!res.ok) return null; // np. 404
-    const raw = await res.text();
-    const { meta, body } = parseMetaAndBody(raw);
-    return {
-      id: n,
-      title: meta.TITLE || `Wpis #${n}`,
-      date: meta.DATE || '',
-      tags: (meta.TAGS || '').split(',').map(s=>s.trim()).filter(Boolean),
-      image: meta.IMAGE || '',
-      body
-    };
-  }catch{ return null; }
-}
-
-// NOWY skaner: kończy po 3 pudłach z rzędu (i max 100 prób)
-async function loadAll(){
-  const found = [];
-  let i = 1;
-  let misses = 0;
-  const MISS_LIMIT = 3;
-  const HARD_LIMIT = 100;
-
-  while (misses < MISS_LIMIT && i <= HARD_LIMIT){
-    const p = await fetchOne(i);
-    if (p){
-      found.push(p);
-      misses = 0;        // reset serii pudł
-    } else {
-      misses++;          // kolejny brak pliku
-    }
-    i++;
+  // Bezpieczna budowa URL-a względem aktualnej strony (działa w podkatalogach GH Pages)
+  function blogUrl(file) {
+    return new URL(`${PATH}/${file}`, window.location.href).toString();
   }
 
-  found.sort((a,b)=>b.id - a.id);
-  ALL_POSTS = found;
-  render(found);
-}
+  function parseMetaAndBody(raw) {
+    const parts = raw.split(/\r?\n-{3,}\r?\n/);
+    const head = parts[0] || '';
+    const body = parts.slice(1).join('\n---\n') || '';
+    const meta = {};
+    head.split(/\r?\n/).forEach(line => {
+      const m = line.match(/^\s*([A-Za-z]+)\s*:\s*(.+)\s*$/);
+      if (m) meta[m[1].toUpperCase()] = m[2];
+    });
+    return { meta, body };
+  }
+
+  function stripMd(md) {
+    return md
+      .replace(/```[\s\S]*?```/g, '')
+      .replace(/`[^`]*`/g, '')
+      .replace(/!\[[^\]]*\]\([^)]+\)/g, '')
+      .replace(/\[[^\]]*\]\([^)]+\)/g, '')
+      .replace(/[#>*_\-`~]+/g, '')
+      .replace(/\r?\n\r?\n/g, ' ⏎ ')
+      .replace(/\r?\n/g, ' ');
+  }
+  function excerpt(md, n = 220) {
+    const t = stripMd(md).trim();
+    return t.length > n ? t.slice(0, n).replace(/\s+\S*$/, '') + '…' : t;
+  }
+
+  async function fetchOne(n) {
+    try {
+      const res = await fetch(blogUrl(`BLOG${n}.txt`), { cache: 'no-store' });
+      if (!res.ok) return null;              // np. 404
+      const raw = await res.text();
+      const { meta, body } = parseMetaAndBody(raw);
+      return {
+        id: n,
+        title: meta.TITLE || `Wpis #${n}`,
+        date: meta.DATE || '',
+        tags: (meta.TAGS || '').split(',').map(s => s.trim()).filter(Boolean),
+        image: meta.IMAGE || '',
+        body
+      };
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function loadAll() {
+    const found = [];
+    let i = 1;
+    let misses = 0;
+    const MISS_LIMIT = 3;
+    const HARD_LIMIT = 100;
+
+    while (misses < MISS_LIMIT && i <= HARD_LIMIT) {
+      const p = await fetchOne(i);
+      if (p) { found.push(p); misses = 0; }
+      else   { misses++; }
+      i++;
+    }
+
+    found.sort((a, b) => b.id - a.id);
+    ALL_POSTS = found;
+    render(found);
+  }
+
+  function makeCard(p) {
+    const w = document.createElement('article'); w.className = 'post-card';
+
+    const h = document.createElement('h3');
+    const a = document.createElement('a');
+    a.href = `post.html?id=BLOG${p.id}`;
+    a.textContent = p.title || 'Bez tytułu';
+    h.appendChild(a);
+
+    const meta = document.createElement('div'); meta.className = 'meta';
+    const date = document.createElement('span');
+    date.textContent = p.date ? new Date(p.date).toLocaleDateString('pl-PL') : '';
+    const tags = document.createElement('div'); tags.className = 'tags';
+    (p.tags || []).forEach(t => {
+      const s = document.createElement('span'); s.className = 'tag'; s.textContent = '#' + t; tags.appendChild(s);
+    });
+
+    meta.appendChild(date); if ((p.tags || []).length) meta.appendChild(tags);
+
+    w.appendChild(h);
+    w.appendChild(meta);
+
+    if (p.image) {
+      const c = document.createElement('div'); c.className = 'cover';
+      const img = document.createElement('img'); img.loading = 'lazy'; img.src = p.image; img.alt = p.title || 'Okładka wpisu';
+      c.appendChild(img); w.appendChild(c);
+    }
+
+    const ex = document.createElement('p'); ex.className = 'excerpt'; ex.textContent = excerpt(p.body);
+    const rm = document.createElement('a'); rm.className = 'readmore'; rm.href = `post.html?id=BLOG${p.id}`; rm.textContent = 'Czytaj dalej →';
+    w.appendChild(ex); w.appendChild(rm);
+    return w;
+  }
+
+  function render(list) {
+    const root = document.getElementById('posts');
+    const empty = document.getElementById('empty');
+    root.innerHTML = '';
+    if (!list.length) { empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    list.forEach(p => root.appendChild(makeCard(p)));
+  }
+
+  function setupSearch() {
+    const q = document.getElementById('q');
+    if (!q) return;
+    q.addEventListener('input', () => {
+      const term = q.value.trim().toLowerCase();
+      if (!term) return render(ALL_POSTS);
+      const f = ALL_POSTS.filter(p =>
+        (p.title || '').toLowerCase().includes(term) ||
+        (p.tags || []).some(t => t.toLowerCase().includes(term))
+      );
+      render(f);
+    });
+  }
+
+  setupSearch();
+  loadAll();
 </script>
 
 </body>
