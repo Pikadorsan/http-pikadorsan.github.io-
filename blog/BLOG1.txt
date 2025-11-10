@@ -1,0 +1,19 @@
+TITLE: Jak przygotować dokumenty do sprawy rozwodowej
+DATE: 2025-11-09
+TAGS: rozwód, prawo rodzinne, dokumenty
+IMAGE: IMG_BLOG1.jpg
+
+---
+W tym wpisie omawiamy, **jakie dokumenty** zabrać na pierwszą konsultację
+w sprawie rozwodowej.
+
+1. Odpis aktu małżeństwa.
+2. Odpisy aktów urodzenia dzieci (jeśli są).
+3. Informacje o dochodach i wydatkach.
+
+Więcej informacji znajdziesz na stronie [gov.pl](https://www.gov.pl/).
+
+Obrazek w treści:
+![Przykładowa okładka](IMG_BLOG1_inside.jpg)
+
+Akapity oddzielaj *pustą linią*. To wszystko.

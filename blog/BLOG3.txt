@@ -1,0 +1,28 @@
+TITLE: Jak przygotować się do pierwszej konsultacji prawnej
+DATE: 2025-11-09
+TAGS: konsultacja, dokumenty, porady
+IMAGE: blog/IMG_BLOG3.jpg
+
+---
+Pierwsza konsultacja to moment, w którym **uporządkujemy fakty** i wybierzemy najlepszą strategię.
+Poniżej krótka lista, co zabrać i jak się przygotować.
+
+## Co warto przynieść
+- Umowy, pisma z sądu/urzędu, korespondencję e-mail (wydruki są OK).
+- Notatkę z **chronologią wydarzeń** (punkty + daty).
+- Dane kontaktowe drugiej strony (jeśli istotne).
+
+## Jak opisać sprawę
+1. Kto? (strony, relacje)
+2. Co się stało? (krótko i **chronologicznie**)
+3. Czego oczekujesz? (cel: np. ugoda, pozew, opinia umowy)
+
+Przykładowe wzmianki:
+- **Dowody**: zdjęcia, nagrania, potwierdzenia przelewów.
+- **Terminy**: jeśli masz pismo z terminem odpowiedzi — zaznacz to.
+
+Więcej ogólnych wskazówek znajdziesz na [gov.pl](https://www.gov.pl/).
+
+![Przykładowa konsultacja](blog/IMG_BLOG3_inside.jpg)
+
+> Jeśli wolisz konsultację online, w wiadomości podaj preferowane godziny oraz formę kontaktu (telefon/Google Meet).
