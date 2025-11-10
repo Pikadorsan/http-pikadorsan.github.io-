@@ -320,8 +320,21 @@ footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.12);padding:28px 0
   // Start
   setupSearch();
   loadAll();
+
+  function stripMd(md) {
+  return md
+    .replace(/```[\s\S]*?```/g, '')         // bloki kodu
+    .replace(/`[^`]*`/g, '')                // inline code
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, '')   // obrazki
+    .replace(/\[[^\]]*\]\([^)]+\)/g, '')    // linki
+    .replace(/[#>*_\-`~]+/g, '')            // dekoracje
+    .replace(/\r?\n+/g, ' ')                // <-- zamienia każdy enter na spację
+    .trim();
+}
+
 </script>
 
 
 </body>
 </html>
+
